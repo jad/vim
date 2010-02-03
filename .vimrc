@@ -227,14 +227,7 @@ autocmd FileType objc set makeprg=rake
 autocmd FileType objc set tags+=tags;$HOME
 "autocmd FileType objc source $HOME/.vim/syntax/objc_enhanced.vim
 
-"
-" LaTeX
-"
 
-" REQUIRED. This makes vim invoke latex-suite when you open a tex file.
-filetype plugin on
-
-" Only do this for Vim version 7.0 and later.
 if version >= 700
 
   " Turn on spell checking if it hasn't been enabled yet.
