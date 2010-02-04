@@ -346,3 +346,8 @@ inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 " Ignore vim compiled without ruby (Mac OS X 10.6.2 vim does not contain ruby)
 "
 let g:LustyJugglerSuppressRubyWarning = 1
+
+"
+" vimwiki
+"
+let g:vimwiki_list = [{'path': '~/Documents/Wiki/', 'path_html': '~/Sites/wiki/'}]
