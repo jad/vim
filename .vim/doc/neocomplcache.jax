@@ -1,6 +1,6 @@
 *neocomplcache.txt*	究極の自動補完環境
 
-Version: 4.00
+Version: 4.08
 Author : Shougo <Shougo.Matsu@gmail.com>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
@@ -232,8 +232,8 @@ g:NeoComplCache_EnableQuickMatch			*g:NeoComplCache_EnableQuickMatch*
 		
 		初期値は1なので、有効になっている。
 
-g:NeoComplCache_CalcRankRandomize			*g:NeoComplCache_CalcRankRandomize*
-		頻度を再計算するときに、乱数を使用するかを制御する。 1ならば
+g:NeoComplCache_EnableRandomize			*g:NeoComplCache_EnableRandomize*
+		頻度を再計算するときなどに、乱数を使用するかを制御する。 1ならば
 		有効になる。
 		
 		初期値は+reltimeの時に1となる。
@@ -249,13 +249,6 @@ g:NeoComplCache_SkipCompletionTime			*g:NeoComplCache_SkipCompletionTime*
 		の値は文字列でなければならない。
 		
 		初期値は'0.2'である。
-
-g:NeoComplCache_CachingRandomize			*g:NeoComplCache_CachingRandomize*
-		Insert modeから出る時、現在のキャッシュラインをキャッシュす
-		るかどうか決定するのに、 乱数を用いるかどうか制御する。1なら
-		ば有効になる。
-		
-		初期値は+reltimeの時に1となる。
 
 g:NeoComplCache_EnableCamelCaseCompletion		*g:NeoComplCache_EnableCamelCaseCompletion*
 		大文字を入力したときに、それを単語の区切りとしてあいまい検索
@@ -313,22 +306,27 @@ g:NeoComplCache_KeywordPatterns				*g:NeoComplCache_KeywordPatterns*
 		
 		初期値は複雑なので、autoload/neocomplcache.vimを参照せよ。
 
+g:NeoComplCache_NextKeywordPatterns			*g:NeoComplCache_NextKeywordPatterns*
+		カーソルより後のキーワードパターンを認識するための正規表現を記録する。
+		|g:NeoComplCache_KeywordPatterns|と形式は同じである。
+		
+		初期値は複雑なので、autoload/neocomplcache.vimを参照せよ。
+
 g:NeoComplCache_OmniPatterns				*g:NeoComplCache_OmniPatterns*
 		オムニ補完するためのキーワードパターンを記録する。 これはファ
 		イルタイプ毎に正規表現で指定されている。
 		
 		初期値は複雑なので、autoload/neocomplcache.vimを参照せよ。
 
-g:NeoComplCache_SameFileTypeLists			*g:NeoComplCache_SameFileTypeLists*
-		ファイルタイプを相互に関連づけるためのディクショナリ。 cと
-		cppを相互参照させるときなどに有効である。
+g:NeoComplCache_TagsFilterPatterns			*g:NeoComplCache_TagsFilterPatterns*
+		タグ補完時の候補をフィルタするパターンを記録する。
+		例えば、C/C++のファイルタイプ時に_で始まる候補を除外することができる。
 		
 		初期値は複雑なので、autoload/neocomplcache.vimを参照せよ。
 
-g:NeoComplCache_NonBufferFileTypeDetect			*g:NeoComplCache_NonBufferFileTypeDetect*
-		拡張子とファイルタイプを関連づけるためのディクショナリ。 辞
-		書ファイルなど、うまくファイルタイプが判定できないときに有効
-		である。
+g:NeoComplCache_SameFileTypeLists			*g:NeoComplCache_SameFileTypeLists*
+		ファイルタイプを相互に関連づけるためのディクショナリ。 cと
+		cppを相互参照させるときなどに有効である。
 		
 		初期値は複雑なので、autoload/neocomplcache.vimを参照せよ。
 
@@ -351,10 +349,15 @@ g:NeoComplCache_DisableSelectModeMappings		*g:NeoComplCache_DisableSelectModeMap
 		
 		初期値は1である。
 
+g:NeoComplCache_CtagsProgram				*g:NeoComplCache_CtagsProgram*
+		include_completeなどがタグ生成に使用するctagsコマンドへのパスを指定する。
+		
+		初期値は"ctags"である。
+
 g:NeoComplCache_CtagsArgumentsList			*g:NeoComplCache_CtagsArgumentsList*
-		buffer_completeやinclude_completeがctagsコマンドを使用する際
-		に、 コマンドの引数として与える値を設定するための、ファイル
-		タイプをキーとした文字列の辞書である。
+		include_completeなどがctagsコマンドを使用する際に、コマンドの
+		引数として与える値を設定するための、ファイルタイプをキーと
+		した文字列の辞書である。
 		
 		初期値は複雑なので、autoload/neocomplcache.vimを参照せよ。
 
@@ -456,6 +459,12 @@ neocomplcache#undo_completion				*neocomplcache#undo_completion*
 >
 		inoremap <expr><C-g>     neocomplcache#undo_completion()
 <
+neocomplcache#complete_common_string()			*neocomplcache#complete_common_string()*
+		inoremap <expr>上で使用する。補完候補の共通文字列を補完する。
+		共通文字列が長い場合に便利である。
+>
+		inoremap <expr><C-l>     neocomplcache#complete_common_string()
+<
 ==============================================================================
 EXAMPLES					*neocomplcache-examples*
 >
@@ -488,6 +497,7 @@ EXAMPLES					*neocomplcache-examples*
 	smap <C-l>     <Plug>(neocomplcache_snippets_expand)
 	inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
 	inoremap <expr><C-g>     neocomplcache#undo_completion()
+	inoremap <expr><C-l>     neocomplcache#complete_common_string()
 <
 ==============================================================================
 PLUGINS					*neocomplcache-plugins*

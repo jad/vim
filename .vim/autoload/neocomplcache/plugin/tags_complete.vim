@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: tags_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 10 Dec 2009
+" Last Modified: 03 Jun 2010
 " Usage: Just source this file.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
@@ -23,9 +23,13 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-" Version: 1.14, for Vim 7.0
+" Version: 1.15, for Vim 7.0
 "-----------------------------------------------------------------------------
 " ChangeLog: "{{{
+"   1.15:
+"    - Use g:NeoComplCache_TagsFilterPatterns.
+"    - Fixed unpack dictionary bug.
+"
 "   1.14:
 "    - Use cache helper.
 "    - Supported neocomplcache ver.4.00.
@@ -135,7 +139,9 @@ function! neocomplcache#plugin#tags_complete#get_keyword_list(cur_keyword_str)"{
     let l:keyword_list = []
     let l:key = tolower(l:cur_keyword_str[: s:completion_length-1])
     if len(l:cur_keyword_str) < s:completion_length || neocomplcache#check_match_filter(l:key)
-        let l:keyword_list += neocomplcache#unpack_dictionary_dictionary(l:tags_list)
+        for tags in values(l:tags_list)
+            let l:keyword_list += neocomplcache#unpack_dictionary(tags)
+        endfor
     else
         for tags in values(l:tags_list)
             if has_key(tags, l:key)
@@ -178,8 +184,13 @@ function! s:initialize_tags(filename)"{{{
         return l:keyword_lists
     endif
     
+    let l:ft = &filetype
+    if l:ft == ''
+        let l:ft = 'nothing'
+    endif
+
     let l:keyword_lists = {}
-    let l:loaded_list = neocomplcache#cache#load_from_tags('tags_cache', a:filename, readfile(a:filename), 'T')
+    let l:loaded_list = neocomplcache#cache#load_from_tags('tags_cache', a:filename, readfile(a:filename), 'T', l:ft)
     if len(l:loaded_list) > 300
         call neocomplcache#cache#save_cache('tags_cache', a:filename, l:loaded_list)
     endif

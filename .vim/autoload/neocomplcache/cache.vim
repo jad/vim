@@ -1,8 +1,7 @@
 "=============================================================================
 " FILE: cache.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 10 Dec 2009
-" Usage: Just source this file.
+" Last Modified: 03 Jun 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -119,7 +118,7 @@ endfunction"}}}
 function! neocomplcache#cache#load_from_file(filename, pattern, mark)"{{{
 
     let l:abbr_pattern = printf('%%.%ds..%%s', g:NeoComplCache_MaxKeywordWidth-10)
-    let l:lines = (bufexists(a:filename) || fnamemodify(a:filename, ':t') == '')?
+    let l:lines = (buflisted(a:filename) || fnamemodify(a:filename, ':t') == '')?
                 \getbufline(bufnr(a:filename), 1, '$') : readfile(a:filename)
     let l:max_lines = len(l:lines)
 
@@ -198,7 +197,7 @@ function! neocomplcache#cache#load_from_file(filename, pattern, mark)"{{{
 
     return l:keyword_lists
 endfunction"}}}
-function! neocomplcache#cache#load_from_tags(cache_dir, filename, tags_list, mark)"{{{
+function! neocomplcache#cache#load_from_tags(cache_dir, filename, tags_list, mark, filetype)"{{{
     let l:max_lines = len(a:tags_list)
     
     if l:max_lines > 1000
@@ -240,14 +239,18 @@ function! neocomplcache#cache#load_from_tags(cache_dir, filename, tags_list, mar
             endif
             let l:line_cnt -= 1"}}}
 
-            let l:tag = split(l:line, '\t', 1)
+            let l:tag = split(substitute(l:line, "\<CR>", '', 'g'), '\t', 1)
             " Add keywords.
             if l:line !~ '^!' && len(l:tag) >= 3 && len(l:tag[0]) >= g:NeoComplCache_MinKeywordLength
                         \&& !has_key(l:dup_check, l:tag[0])
                 let l:option = {
-                            \ 'cmd' : substitute(substitute(l:tag[2], '^[/?]\^\?\s*\|\$\?[/?];"$', '', 'g'), '\\\\', '\\', 'g'), 
+                            \ 'cmd' : substitute(substitute(l:tag[2], '^\%([/?]\^\)\?\s*\|\%(\$\?[/?]\)\?;"$', '', 'g'), '\\\\', '\\', 'g'), 
                             \ 'kind' : ''
                             \}
+                if l:option.cmd =~ '\d\+'
+                    let l:option.cmd = l:tag[0]
+                endif
+                
                 for l:opt in l:tag[3:]
                     let l:key = matchstr(l:opt, '^\h\w*\ze:')
                     if l:key == ''
@@ -305,6 +308,10 @@ function! neocomplcache#cache#load_from_tags(cache_dir, filename, tags_list, mar
             let &l:statusline = l:statusline_save
         endif
     endif
+
+    if a:filetype != '' && has_key(g:NeoComplCache_TagsFilterPatterns, a:filetype)
+        call filter(l:keyword_lists, g:NeoComplCache_TagsFilterPatterns[a:filetype])
+    endif
     
     return l:keyword_lists
 endfunction"}}}
@@ -313,32 +320,25 @@ function! neocomplcache#cache#save_cache(cache_dir, filename, keyword_list)"{{{
     " Create cache directory.
     call neocomplcache#cache#check_dir(a:cache_dir)
 
-    if empty(a:keyword_list)
-        return
-    endif
-    
     let l:cache_name = neocomplcache#cache#encode_name(a:cache_dir, a:filename)
+    
+    " Create dictionary key.
+    for keyword in a:keyword_list
+        if !has_key(keyword, 'kind')
+            let keyword.kind = ''
+        endif
+        if !has_key(keyword, 'class')
+            let keyword.class = ''
+        endif
+    endfor
 
     " Output cache.
     let l:word_list = []
-    if has_key(a:keyword_list[0], 'kind')
-        if has_key(a:keyword_list[0], 'class')
-            for keyword in a:keyword_list
-                call add(l:word_list, printf('%s|||%s|||%s|||%s|||%s', 
-                            \keyword.word, keyword.abbr, keyword.menu, keyword.kind, keyword.class))
-            endfor
-        else
-            for keyword in a:keyword_list
-                call add(l:word_list, printf('%s|||%s|||%s|||%s', 
-                            \keyword.word, keyword.abbr, keyword.menu, keyword.kind))
-            endfor
-        endif
-    else
-        for keyword in a:keyword_list
-            call add(l:word_list, printf('%s|||%s|||%s', 
-                        \keyword.word, keyword.abbr, keyword.menu))
-        endfor
-    endif
+    for keyword in a:keyword_list
+        call add(l:word_list, printf('%s|||%s|||%s|||%s|||%s', 
+                    \keyword.word, keyword.abbr, keyword.menu, keyword.kind, keyword.class))
+    endfor
+    
     call writefile(l:word_list, l:cache_name)
 endfunction"}}}
 
@@ -363,8 +363,8 @@ function! neocomplcache#cache#writefile(cache_dir, filename, list)"{{{
     call writefile(a:list, l:cache_name)
 endfunction"}}}
 function! neocomplcache#cache#encode_name(cache_dir, filename)
-    return printf('%s/%s/%s=', g:NeoComplCache_TemporaryDir, a:cache_dir, 
-                \substitute(substitute(a:filename, ':', '=-', 'g'), '[/\\]', '=+', 'g'))
+    let l:dir = printf('%s/%s/', g:NeoComplCache_TemporaryDir, a:cache_dir) 
+    return l:dir . s:create_hash(l:dir, a:filename)
 endfunction
 function! neocomplcache#cache#check_dir(cache_dir)"{{{
     " Check cache directory.
@@ -379,4 +379,24 @@ function! neocomplcache#cache#check_old_cache(cache_dir, filename)"{{{
     return getftime(l:cache_name) == -1 || getftime(l:cache_name) <= getftime(a:filename)
 endfunction"}}}
 
+" Check md5.
+let s:is_md5 = exists('*md5#md5')
+function! s:create_hash(dir, str)
+    if len(a:dir) + len(a:str) < 150
+        let l:hash = substitute(substitute(a:str, ':', '=-', 'g'), '[/\\]', '=+', 'g')
+    elseif s:is_md5
+        " Use md5.vim.
+        let l:hash = md5#md5(a:str)
+    else
+        " Use simple hash.
+        let l:sum = 0
+        for i in range(len(a:str))
+            let l:sum += char2nr(a:str[i]) * 2
+        endfor
+        
+        let l:hash = printf('%x', l:sum)
+    endif
+
+    return l:hash
+endfunction
 " vim: foldmethod=marker

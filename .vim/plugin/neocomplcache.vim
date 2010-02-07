@@ -1,8 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 10 Dec 2009
-" Usage: Just source this file.
+" Last Modified: 12 Jun 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -23,7 +22,7 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-" Version: 4.00, for Vim 7.0
+" Version: 4.08, for Vim 7.0
 "=============================================================================
 
 if v:version < 700
@@ -79,17 +78,14 @@ endif
 if !exists('g:NeoComplCache_EnableQuickMatch')
     let g:NeoComplCache_EnableQuickMatch = 1
 endif
-if !exists('g:NeoComplCache_CalcRankRandomize')
-    let g:NeoComplCache_CalcRankRandomize = has('reltime')
+if !exists('g:NeoComplCache_EnableRandomize')
+    let g:NeoComplCache_EnableRandomize = has('reltime')
 endif
 if !exists('g:NeoComplCache_EnableSkipCompletion')
     let g:NeoComplCache_EnableSkipCompletion = has('reltime')
 endif
 if !exists('g:NeoComplCache_SkipCompletionTime')
     let g:NeoComplCache_SkipCompletionTime = '0.2'
-endif
-if !exists('g:NeoComplCache_CachingRandomize')
-    let g:NeoComplCache_CachingRandomize = has('reltime')
 endif
 if !exists('g:NeoComplCache_EnableCamelCaseCompletion')
     let g:NeoComplCache_EnableCamelCaseCompletion = 0
@@ -114,6 +110,9 @@ if !exists('g:NeoComplCache_DisablePluginList')
 endif
 if !exists('g:NeoComplCache_TemporaryDir')
     let g:NeoComplCache_TemporaryDir = '~/.neocon'
+endif
+if !exists('g:NeoComplCache_CtagsProgram')
+    let g:NeoComplCache_CtagsProgram = 'ctags'
 endif
 let g:NeoComplCache_TemporaryDir = expand(g:NeoComplCache_TemporaryDir)
 if !isdirectory(g:NeoComplCache_TemporaryDir)
