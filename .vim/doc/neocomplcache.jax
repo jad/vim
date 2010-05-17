@@ -1,6 +1,6 @@
 *neocomplcache.txt*	究極の自動補完環境
 
-Version: 4.20
+Version: 4.30
 Author : Shougo <Shougo.Matsu@gmail.com>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
@@ -239,17 +239,26 @@ g:NeoComplCache_EnableRandomize				*g:NeoComplCache_EnableRandomize*
 		
 		初期値は+reltimeの時に1となる。
 
-g:NeoComplCache_EnableSkipCompletion			*g:NeoComplCache_EnableSkipCompletion*
-		候補の計算に時間がかかりすぎると自動補完を中止するかどうか制
-		御する。 1ならば有効になる。
+g:NeoComplCache_EnableCursorHoldI			*g:NeoComplCache_EnableCursorHoldI*
+		候補の計算を|CursorHoldI|イベント時に行うかどうかを制御する。
+		このオプションが設定されなかった場合、|CursorMovedI|イベン
+		トを使用する。
 		
-		初期値は+reltimeの時に1となる。
+		副作用があるので、初期値は0である。
+
+g:NeoComplCache_EnableAutoSelect			*g:NeoComplCache_EnableAutoSelect*
+		補完候補を出すときに、自動的に一番上の候補を選択するかどうか
+		を制御する。 このオプションを有効化すると、|AutoComplPop|と
+		似た補完動作となる。
+		
+		初期値は0である。
 
 g:NeoComplCache_SkipCompletionTime			*g:NeoComplCache_SkipCompletionTime*
-		自動補完を中止するための計算時間を定義する。 このオプション
-		の値は文字列でなければならない。
+		|g:NeoComplCache_EnableCursorHoldI|が有効になっている場合、
+		自動補完を開始するための計算時間を定義する。このオプションは
+		'updatetime'の値を書き換える。
 		
-		初期値は'0.2'である。
+		初期値は300である。
 
 g:NeoComplCache_EnableCamelCaseCompletion		*g:NeoComplCache_EnableCamelCaseCompletion*
 		大文字を入力したときに、それを単語の区切りとしてあいまい検索
@@ -317,7 +326,8 @@ g:NeoComplCache_OmniPatterns				*g:NeoComplCache_OmniPatterns*
 		オムニ補完するためのキーワードパターンを記録する。 これはファ
 		イルタイプ毎に正規表現で指定されている。
 		
-		初期値は複雑なので、autoload/neocomplcache.vimを参照せよ。
+		初期値は複雑なので、
+		autoload/neocomplcache/complfunc/omni_complete.vimを参照せよ。
 
 g:NeoComplCache_TagsFilterPatterns			*g:NeoComplCache_TagsFilterPatterns*
 		タグ補完時の候補をフィルタするパターンを記録する。
