@@ -295,6 +295,14 @@ autocmd BufNewFile,BufRead *.mkd set ai formatoptions=tcroqn2 comments=n:>
 
 
 "
+" HTML
+"
+autocmd FileType html set shiftwidth=2
+autocmd FileType html set tabstop=2
+autocmd FileType html set softtabstop=2
+
+
+"
 " Java
 "
 autocmd BufNewFile,BufRead *.java set makeprg=ant\ -emacs\ -find\ build.xml\ build
