@@ -44,6 +44,20 @@ else
 endif " has("autocmd")
 
 
+if version >= 700
+  " Turn on spell checking if it hasn't been enabled yet.
+  if !exists("spell_on")
+    set spell
+  endif
+endif
+
+" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
+" can be called correctly.
+set shellslash
+
+
+
+
 " Automatically cd to directory of the buffer.
 if exists('+autochdir') 
     set autochdir 
@@ -160,6 +174,16 @@ colorscheme candy
 " Re-format paragraph, preserving cursor position.
 :nmap Q gwap
 
+" Ctrl-. repeats the last macro, assumed to be saved as 'q'.
+map <C-.> <ESC>@q
+
+" Abbreviation for inserting the current date.
+iab xdate <c-r>=strftime("%F %H:%M:%S")<cr>
+
+" Turn off spell checking in the quick fix window
+autocmd FileType qf set nospell
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                                              "
 " Window navigation                                                            "
@@ -177,14 +201,6 @@ nmap <C-_> <C-W>-
 nmap <C-+> <C-W>+
 
 
-" Ctrl-. repeats the last macro, assumed to be saved as 'q'.
-map <C-.> <ESC>@q
-
-" Abbreviation for inserting the current date.
-iab xdate <c-r>=strftime("%F %H:%M:%S")<cr>
-
-" Turn off spell checking in the quick fix window
-autocmd FileType qf set nospell
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -196,6 +212,7 @@ autocmd FileType qf set nospell
 map <leader>m :make<cr>
 map <leader>n :cnext<cr>
 map <leader>p :cprevious<cr>
+
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -214,32 +231,6 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1  " Rails support
-
-
-
-if version >= 700
-
-  " Turn on spell checking if it hasn't been enabled yet.
-  if !exists("spell_on")
-    set spell
-  endif
-
-endif
-
-" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
-" can be called correctly.
-set shellslash
-
-if has('mac')
-    " FIX: There's an issue with latex-suite finding the PDF viewer on Macs.
-    let Tex_ViewRule_pdf = 'open $*.pdf'
-endif
-
-" FIX: Vim7 has a problem detecting the filetype correctly when editing a new
-" LaTex document
-let g:tex_flavor='latex'
-
-
 
 
 "
@@ -301,6 +292,19 @@ autocmd BufNewFile,BufRead *.mkd set ai formatoptions=tcroqn2 comments=n:>
 autocmd FileType xhtml set shiftwidth=2
 autocmd FileType xhtml set tabstop=2
 autocmd FileType xhtml set softtabstop=2
+
+
+"
+" LaTeX
+"
+if has('mac')
+    " FIX: There's an issue with latex-suite finding the PDF viewer on Macs.
+    let Tex_ViewRule_pdf = 'open $*.pdf'
+endif
+
+" FIX: Vim7 has a problem detecting the filetype correctly when editing a new
+" LaTex document
+let g:tex_flavor='latex'
 
 
 "
