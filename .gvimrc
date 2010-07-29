@@ -6,7 +6,7 @@ map! <S-Insert> <MiddleMouse>
 " Inconsolata is downloadable here:
 "   http://www.levien.com/type/myfonts/inconsolata.html
 "set anti enc=utf-8 gfn=Inconsolata:h13
-set anti enc=utf-8 gfn=Menlo\ Regular:h10
+set anti enc=utf-8 gfn=Menlo\ Regular:h11
 
 " Switch on syntax highlighting if it wasn't on yet.
 if !exists("syntax_on")
