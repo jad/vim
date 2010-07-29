@@ -216,17 +216,6 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1  " Rails support
 
 
-"
-" Objective-C
-"
-
-autocmd FileType objc set foldenable
-autocmd FileType objc set foldmethod=syntax
-autocmd FileType objc nmap <leader>t :call ToggleHeaderOrImplFile()<CR>
-autocmd FileType objc set makeprg=rake
-autocmd FileType objc set tags+=tags;$HOME
-"autocmd FileType objc source $HOME/.vim/syntax/objc_enhanced.vim
-
 
 if version >= 700
 
@@ -249,6 +238,18 @@ endif
 " FIX: Vim7 has a problem detecting the filetype correctly when editing a new
 " LaTex document
 let g:tex_flavor='latex'
+
+
+
+
+"
+" Objective-C
+"
+
+autocmd FileType objc nmap <leader>t :call ToggleHeaderOrImplFile()<CR>
+autocmd FileType objc set makeprg=rake
+autocmd FileType objc set tags+=tags;$HOME
+
 
 
 "
