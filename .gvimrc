@@ -35,7 +35,7 @@ if v:version > 700
     call ExpextCursorSlowDown(now)
 endif
 
-set transparency=10         " Who doesn't love transparenty windows?
+set transparency=0          " Set window alpha
 set go-=T                   " Turn off the toolbar.
 
 "
@@ -69,18 +69,6 @@ nmap <silent> <leader>]] :call AddVerticalWindows(1)<CR>
 nmap <silent> <leader>[[ :call AddVerticalWindows(-1)<CR>
 
 
-" Process files even when the taglist window is not open.
-let Tlist_Process_File_Always=1
-" Set to 1 to show only the current file in the taglist window.
-let Tlist_Show_One_File=0
-" Fold tags for all but the currently used file.
-let Tlist_File_Fold_Auto_Close=1
-" Put the taglist window on the right.
-let Tlist_Use_Right_Window=1
-" Set the width of the taglist window.
-let Tlist_WinWidth=40
-" Close the Vim window if the taglist window is the only one left.
-let Tlist_Exit_OnlyWindow=1
 
 "
 " Customize the NERD Tree plugin.
