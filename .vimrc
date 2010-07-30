@@ -210,8 +210,8 @@ nmap <C-+> <C-W>+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 map <leader>m :make<cr>
-map <leader>n :cnext<cr>
-map <leader>p :cprevious<cr>
+map <D-'> :cnext<cr>
+map <D-"> :cprevious<cr>
 
 
 
@@ -240,6 +240,7 @@ autocmd FileType ruby,eruby let g:rubycomplete_rails = 1  " Rails support
 autocmd FileType objc nmap <leader>t :call ToggleHeaderOrImplFile()<CR>
 autocmd FileType objc set makeprg=rake
 autocmd FileType objc set tags+=tags;$HOME
+autocmd FileType objc nmap <c-L> :ListMethods<CR>
 
 
 
