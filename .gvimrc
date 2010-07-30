@@ -17,7 +17,7 @@ endif
 set hlsearch                " Switch on search pattern highlighting.
 set number                  " Turn on line numbers
 set numberwidth=5           " By default can fit at least 9999 lines
-set lines=58                " Make our GUI window reasonably tall
+set lines=65                " Make our GUI window reasonably tall
 set columns=85              " 80 columns + room for line numbers
 set ch=2                    " Make command line two lines high
 set mousehide               " Hide the mouse when typing text
