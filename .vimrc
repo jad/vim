@@ -255,7 +255,7 @@ autocmd FileType ruby,eruby let g:rubycomplete_rails = 1  " Rails support
 autocmd FileType objc nmap <leader>t :call ToggleHeaderOrImplFile()<CR>
 autocmd FileType objc set makeprg=rake
 autocmd FileType objc set tags+=tags;$HOME
-autocmd FileType objc nmap <c-L> :ListMethods<CR>
+"autocmd FileType objc nmap <c-L> :ListMethods<CR>
 
 
 
