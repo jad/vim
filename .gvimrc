@@ -38,6 +38,8 @@ endif
 set transparency=0          " Set window alpha
 set go-=T                   " Turn off the toolbar.
 
+colorscheme xcode
+
 "
 " Display characters that are longer than 80 characters in a different color.
 "
