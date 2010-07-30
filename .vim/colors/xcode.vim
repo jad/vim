@@ -31,7 +31,7 @@ hi label        guibg=#000000   guifg=#3333ff   gui=none
 
 hi preproc      guibg=#ffffff   guifg=#78482f   gui=none
 hi include      guibg=#ffffff   guifg=#78482F   gui=none
-hi precondit    guibg=#000000   guifg=#78482f   gui=none
+hi precondit    guibg=#ffffff   guifg=#78482f   gui=none
 
 " void, BOOL, id, (for objective-c) etc.
 hi type         guibg=#ffffff   guifg=#bb2d9d   gui=none
