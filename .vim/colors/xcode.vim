@@ -19,6 +19,7 @@ let g:colors_name="xcode"
 hi comment      guibg=#ffffff   guifg=#008425   gui=none
 
 hi constant     guibg=#ffffff   guifg=#31595d   gui=none
+" format specifiers in printf-style strings
 hi specialchar  guibg=#ffffff   guifg=#ff3333   gui=underline
 
 " In objc, this only seems to apply to leading '-' and '+' in front of method
@@ -36,8 +37,7 @@ hi precondit    guibg=#ffffff   guifg=#78482f   gui=none
 " void, BOOL, id, (for objective-c) etc.
 hi type         guibg=#ffffff   guifg=#bb2d9d   gui=none
 
-" format specifiers in printf-style strings
-hi special      guibg=#ffffff   guifg=#cc00cc   gui=underline
+hi special      guibg=#ffffff   guifg=#cc00cc   gui=none
 
 hi error        guibg=#ff3333   guifg=#ffffff   gui=none
 
