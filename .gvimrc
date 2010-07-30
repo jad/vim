@@ -21,6 +21,9 @@ set lines=65                " Make our GUI window reasonably tall
 set columns=85              " 80 columns + room for line numbers
 set ch=2                    " Make command line two lines high
 set mousehide               " Hide the mouse when typing text
+set lazyredraw              " Don't redraw screen during macros
+set ttyfast                 " Improves redrawing for newer computers
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                                              "
