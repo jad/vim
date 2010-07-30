@@ -345,30 +345,30 @@ autocmd BufRead *.java map gc gdbf
 "
 " neocomplcache
 "
-let g:NeoComplCache_EnableAtStartup = 1
+"let g:NeoComplCache_EnableAtStartup = 1
 " Use smartcase.
-let g:NeoComplCache_SmartCase = 1
+"let g:NeoComplCache_SmartCase = 1
 " Use previous keyword completion.
-let g:NeoComplCache_PreviousKeywordCompletion = 1
+"let g:NeoComplCache_PreviousKeywordCompletion = 1
 " Use preview window.
-let g:NeoComplCache_EnableInfo = 1
+"let g:NeoComplCache_EnableInfo = 1
 " Use camel case completion.
-let g:NeoComplCache_EnableCamelCaseCompletion = 1
+"let g:NeoComplCache_EnableCamelCaseCompletion = 1
 " Don't use underbar completion.
-let g:NeoComplCache_EnableUnderbarCompletion = 0
+"let g:NeoComplCache_EnableUnderbarCompletion = 0
 " Set minimum syntax keyword length.
-let g:NeoComplCache_MinSyntaxLength = 3
+"let g:NeoComplCache_MinSyntaxLength = 3
 " Set skip input time.
-let g:NeoComplCache_SkipInputTime = '0.1'
+"let g:NeoComplCache_SkipInputTime = '0.1'
 
 " Plugin key-mappings.
-imap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
-smap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
-inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
-inoremap <expr><silent><C-g>     neocomplcache#undo_completion()
+"imap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
+"smap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
+"inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
+"inoremap <expr><silent><C-g>     neocomplcache#undo_completion()
 
 " Use Tab for completion
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 "
 " LustyJuggler
