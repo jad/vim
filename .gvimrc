@@ -45,9 +45,11 @@ colorscheme xcode
 
 "
 " Display characters that are longer than 80 characters in a different color.
+" Disable for Markdown files.
 "
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.*/
+autocmd BufNewFile,BufRead *.mkd match
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                                              "
